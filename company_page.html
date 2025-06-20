@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Layout</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #fff;
+    }
+
+    .window {
+      margin: 30px auto;
+      width: 90%;
+      max-width: 900px;
+      border: 2px solid #000;
+      border-radius: 15px;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border: 2px solid #000;
+      border-radius: 10px;
+    }
+
+    .left-icon {
+      width: 30px;
+      height: 30px;
+      background: lightgreen;
+      border-radius: 50%;
+      border: 2px solid #000;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      width: 40px;
+      height: 30px;
+      border: 2px solid #000;
+      border-radius: 8px;
+    }
+
+    .content {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 20px;
+    }
+
+    .column {
+      text-align: center;
+    }
+
+    .box {
+      width: 250px;
+      height: 300px;
+      background: lightgreen;
+      border-radius: 15px;
+      border: 2px solid #000;
+    }
+
+    .title {
+      margin: 10px 0 10px;
+      font-style: italic;
+    }
+
+    .input {
+      width: 250px;
+      height: 50px;
+      border: 2px solid #000;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="window">
+    <div class="toolbar">
+      <div class="left-icon"></div>
+      <div class="buttons">
+        <div class="btn"></div>
+        <div class="btn"></div>
+        <div class="btn"></div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="column">
+        <div class="box"></div>
+        <div class="title">TITLE</div>
+        <div class="input"></div>
+      </div>
+      <div class="column">
+        <div class="box"></div>
+        <div class="title">TITLE</div>
+        <div class="input"></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
