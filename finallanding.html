@@ -1,0 +1,1472 @@
+<!-- Full MediVault Dashboard Combined -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MediVault Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', 'Roboto', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #141e30, #243b55);
+      color: #e0e0e0;
+      line-height: 1.6;
+      padding: 0;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      font-weight: 600;
+      color: #f0f0f0;
+      margin-bottom: 0.5rem;
+    }
+
+    h2 {
+      font-size: 1.6rem;
+    }
+
+    h3 {
+      font-size: 1.3rem;
+    }
+
+    h4 {
+      font-size: 1.1rem;
+    }
+
+    p,
+    li,
+    a,
+    span {
+      font-size: 0.95rem;
+      color: #cfcfcf;
+    }
+
+    ul {
+      padding-left: 1rem;
+    }
+
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(0, 0, 0, 0.3);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .navbar h1 {
+      font-size: 1.5rem;
+    }
+
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(0, 0, 0, 0.4);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    .top-nav a,
+    .top-nav button {
+      margin: 0 1rem;
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .logo {
+      font-size: 1.4rem;
+      font-weight: bold;
+      margin-right: 2rem;
+    }
+
+    .nav-left,
+    .nav-right {
+      display: flex;
+      align-items: center;
+    }
+
+    .settings-dropdown {
+      position: relative;
+    }
+
+    .settings-dropdown:hover .settings-menu {
+      display: block;
+    }
+
+    .settings-menu {
+      display: none;
+      position: absolute;
+      right: 0;
+      background: #222;
+      border-radius: 8px;
+      padding: 0.5rem;
+      margin-top: 0.5rem;
+      min-width: 180px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    .settings-menu a {
+      display: block;
+      padding: 0.5rem;
+      color: white;
+      text-decoration: none;
+    }
+
+    .settings-menu a:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .user-menu {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #eee;
+    }
+
+    .settings-dropdown {
+      position: relative;
+    }
+
+    .settings-dropdown:hover .dropdown-menu {
+      display: block;
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 40px;
+      background: #333;
+      padding: 1rem;
+      border-radius: 8px;
+      min-width: 200px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .dropdown-menu h4 {
+      margin-bottom: 0.5rem;
+    }
+
+    .dropdown-menu ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .dropdown-menu li {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 5px;
+    }
+
+    .dropdown-menu button {
+      background: #f44336;
+      border: none;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .dashboard {
+      padding: 2rem;
+    }
+
+    .greetings {
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      color: white;
+      animation: fadeInUp 1s ease forwards;
+      height: 300px;
+      text-align: center;
+      margin-top: 2rem;
+      transition: transform 0.4s ease, opacity 0.4s ease;
+    }
+
+    .greetings.hide {
+      opacity: 0;
+      transform: translateY(-50px);
+      pointer-events: none;
+    }
+
+    .greetings h2 {
+      font-size: 2rem;
+      color: #809281;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-card {
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      animation: fadeInUp 1s ease forwards;
+    }
+
+    .charts,
+    .info-row,
+    .actions-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 1rem;
+    }
+
+    .card {
+      flex: 1;
+      min-width: 250px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      backdrop-filter: blur(5px);
+      opacity: 0;
+      transform: translateY(20px);
+      animation: slideUpFade 0.8s ease forwards;
+    }
+
+    .card:nth-child(1) {
+      animation-delay: 0.1s;
+    }
+
+    .card:nth-child(2) {
+      animation-delay: 0.3s;
+    }
+
+    .card:nth-child(3) {
+      animation-delay: 0.5s;
+    }
+
+    @keyframes slideUpFade {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .upload-prescription-wrapper {
+      display: flex;
+      gap: 20px;
+      height: 400px;
+    }
+
+    .upload-box {
+      flex: 1;
+      border: 2px dashed #fff;
+      padding: 2rem;
+      text-align: center;
+      border-radius: 10px;
+      cursor: pointer;
+      overflow: auto;
+    }
+
+    .history-box {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+
+    .history-entry {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 0.8rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      position: relative;
+    }
+
+    .entry-options-wrapper {
+      position: relative;
+    }
+
+    .entry-menu {
+      cursor: pointer;
+      font-size: 1.2rem;
+      user-select: none;
+      padding: 0 0.5rem;
+    }
+
+    .entry-dropdown {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 25px;
+      background: #222;
+      border-radius: 6px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+      z-index: 1000;
+      animation: dropdownFade 0.2s ease-in-out;
+    }
+
+    .entry-dropdown button {
+      display: block;
+      background: none;
+      border: none;
+      color: white;
+      padding: 8px 12px;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .entry-dropdown button:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    @keyframes dropdownFade {
+      from {
+        opacity: 0;
+        transform: translateY(-5px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Optional modal-style details alert */
+    .modal-details {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      background: #333;
+      color: #fff;
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      animation: dropdownFade 0.3s ease;
+    }
+
+    .entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .entry-menu {
+      cursor: pointer;
+    }
+
+    .entry-footer {
+      margin-top: 0.5rem;
+    }
+
+    .copy-btn {
+      background: #4caf50;
+      color: white;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 0.5rem;
+    }
+
+    textarea[readonly] {
+      width: 100%;
+      height: 100px;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    /* Modal backdrop for blur */
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      backdrop-filter: blur(4px);
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 9998;
+      animation: fadeInBackdrop 0.3s ease;
+    }
+
+    /* Modal box */
+    .modal-details {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      background: #333;
+      color: #fff;
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      transform: translate(-50%, -50%) scale(0.95);
+      z-index: 9999;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      animation: fadeInModal 0.3s ease forwards;
+    }
+
+    /* Animations */
+    @keyframes fadeInBackdrop {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeInModal {
+      from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.9);
+      }
+
+      to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+
+
+    .chatbot-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      width: 180px;
+      height: 60px;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+    }
+
+    .chatbot-placeholder {
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      width: 300px;
+      height: 400px;
+      background: #222;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+      padding: 1rem;
+      display: none;
+      z-index: 999;
+      color: white;
+    }
+
+    .chart-info {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 0.85rem;
+      color: #ccc;
+    }
+
+    .bmi-legend {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      margin-top: 0.5rem;
+      padding: 0 0.5rem;
+      color: #ccc;
+    }
+
+    .bmi-legend span {
+      flex: 1;
+      text-align: center;
+    }
+
+    .bmi-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 1rem;
+    }
+
+    canvas#bmiGauge {
+      max-width: 100%;
+      height: 100px;
+    }
+
+
+    /* appointment */
+    .appointment-section {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .appointment-form,
+    .doctor-contact {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .appointment-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .appointment-form input,
+    .appointment-form select,
+    .appointment-form button,
+    .appointment-form textarea {
+      padding: 0.7rem;
+      border-radius: 6px;
+      border: none;
+      font-size: 0.9rem;
+    }
+
+    .appointment-form button {
+      background-color: #4caf50;
+      color: white;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .appointment-form button:hover {
+      background-color: #43a047;
+    }
+
+    .chat-options {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .chat-options button {
+      flex: 1;
+      padding: 0.7rem;
+      border-radius: 6px;
+      background: #2196f3;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .chat-options button:hover {
+      background: #1976d2;
+    }
+
+    .doctor-contact h4 {
+      margin-bottom: 0.5rem;
+    }
+
+    .doctor-contact p {
+      margin: 0.3rem 0;
+    }
+
+    /* doctor card */
+    .doctor-panel {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 1.5rem;
+    }
+
+    /* .doctor-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-height: 600px;
+      overflow-y: auto;
+    }  */
+
+    .doctor-card {
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .doctor-card1 {
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      /* max-height: 600px; */
+      /* Adjust height as needed */
+      overflow-y: auto;
+    }
+
+
+    .doctor-card h4 {
+      margin-bottom: 0.8rem;
+    }
+
+    .sync-btn {
+      margin-top: 1rem;
+      padding: 6px 12px;
+      background: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .sync-btn:hover {
+      background: #43a047;
+    }
+
+    .appointment-form input,
+    .appointment-form textarea,
+    .appointment-form button {
+      margin-top: 0.5rem;
+    }
+
+    /* appnt */
+    .appointment-entry {
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 0.8rem 1rem;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .appt-date {
+      background: #4caf50;
+      color: white;
+      width: 50px;
+      text-align: center;
+      border-radius: 8px;
+      padding: 0.5rem 0;
+      margin-right: 1rem;
+      line-height: 1.2;
+    }
+
+    .appt-date .day {
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+
+    .appt-date .month {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+    }
+
+    .appt-details p {
+      margin: 0;
+      color: #e0e0e0;
+      font-size: 0.9rem;
+    }
+
+    .appt-actions {
+      margin-top: 0.5rem;
+      /* display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center; */
+    }
+
+    .more-actions-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+
+    .more-actions-btn {
+      padding: 4px 8px;
+      font-size: 0.8rem;
+      border-radius: 5px;
+      background: #2196f3;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+
+    .more-actions-menu {
+      display: none;
+      position: absolute;
+      top: 35px;
+      left: 0;
+      background: #222;
+      padding: 0.5rem;
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      z-index: 10;
+    }
+
+    .more-actions-menu button {
+      display: block;
+      background: none;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      text-align: left;
+      width: 100%;
+      cursor: pointer;
+    }
+
+    .more-actions-menu button:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .appt-actions button {
+      padding: 4px 8px;
+      font-size: 0.8rem;
+      border-radius: 5px;
+      background: #2196f3;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+
+    .appt-actions button:hover {
+      background: #1976d2;
+    }
+
+    .status-badge {
+      background: #ffc107;
+      color: #000;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .status-badge.upcoming {
+      background: #4caf50;
+      color: white;
+    }
+
+
+    /* dosage info */
+    .dosage-tag {
+      display: inline-block;
+      margin-left: 10px;
+      padding: 2px 6px;
+      font-size: 0.75rem;
+      border-radius: 4px;
+      background: #4caf50;
+      color: white;
+    }
+
+    .dosage-tag.night {
+      background: #2196f3;
+    }
+
+    .dosage-tag.morning {
+      background: #ff9800;
+    }
+
+    .dosage-tag.as-needed {
+      background: #9c27b0;
+    }
+    /* doctor lsit box */
+    .doctor-list-box {
+  max-height: 400px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-right: 5px;
+}
+.doctor-entry {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  color: #fff;
+}
+.doctor-entry strong {
+  font-size: 1rem;
+}
+.doctor-entry small {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+.doctor-entry .entry-footer {
+  margin-top: 0.8rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.doctor-entry button {
+  padding: 4px 8px;
+  background: #2196f3;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.doctor-entry button:hover {
+  background: #1976d2;
+}
+
+  </style>
+</head>
+
+<body>
+  <!--<div class="navbar">-->
+  <!--  <h1>MediVault</h1>-->
+  <!--  <div class="user-menu">-->
+  <!--    <div class="settings-dropdown">-->
+  <!--      ⚙️ Settings-->
+  <!--      <div class="dropdown-menu">-->
+  <!--        <h4>Access History</h4>-->
+  <!--        <ul>-->
+  <!--          <li>Dr. Roy <button>Revoke</button></li>-->
+  <!--          <li>Dr. Sen <button>Revoke</button></li>-->
+  <!--        </ul>-->
+  <!--      </div>-->
+  <!--    </div>-->
+  <!--    <span>User Name</span>-->
+  <!--    <div class="avatar"></div>-->
+  <!--  </div>-->
+  <!--</div>-->
+  <nav class="top-nav">
+    <div class="nav-left">
+      <span class="logo">MediVault</span>
+      <a href="#doctors">Doctors</a>
+      <a href="#medicines">Medicines</a>
+    </div>
+    <div class="nav-right">
+      <button id="darkToggle">🌙</button>
+      <div class="settings-dropdown">
+        <button>⚙️ Settings ▾</button>
+        <div class="settings-menu">
+          <a href="#accessControl">Access Control</a>
+          <a href="#uploaded">Uploaded Prescriptions</a>
+          <a href="#documents">Documents</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="greetings">
+    <h2>Welcome back, User!</h2>
+    <p style="color: #ccc; font-size: 1.1rem;">Here's a quick snapshot of your health status and updates.</p>
+  </div>
+  <!-- health insights -->
+  <div class="dashboard">
+    <div class="section-card">
+      <h2>Health Trends</h2>
+      <div class="charts">
+        <div class="card">
+          <h3>BP History</h3>
+          <canvas id="bpChart"></canvas>
+          <div class="chart-info">Latest(12/05/2025): 122/84 mmHg</div>
+        </div>
+        <div class="card">
+          <h3>Sugar History</h3>
+          <canvas id="sugarChart"></canvas>
+          <div class="chart-info">Latest(12/05/2025): 98 mg/dL</div>
+        </div>
+        <div class="card">
+          <h3>BMI</h3>
+          <canvas id="bmiGauge" width="280" height="140"></canvas>
+          <div class="bmi-legend">
+            <span>Underweight<br /><small>&lt; 18.5</small></span>
+            <span>Normal<br /><small>18.5–24.9</small></span>
+            <span>Overweight<br /><small>25–29.9</small></span>
+            <span>Obese<br /><small>30–34.9</small></span>
+            <span>Severe<br /><small>35+</small></span>
+          </div>
+          <div class="chart-info">Latest: 24.5</div>
+        </div>
+      </div>
+      <div class="info-row" style="margin-top: 2rem; margin-bottom: 4rem;">
+        <div class="card">
+          <h4>Allergy Alerts</h4>
+          <ul>
+            <li>Penicillin</li>
+            <li>Pollen</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>General Notes</h4>
+          <p>Patient reports mild dizziness after medication. Monitor hydration and sleep.</p>
+        </div>
+        <div class="card">
+          <h4>MEDICATIONS</h4>
+          <ul>
+            <li>Metformin – 500mg <span class="dosage-tag morning">Morning</span></li>
+            <li>Paracetamol – 650mg <span class="dosage-tag as-needed">As Needed</span></li>
+            <li>Amlodipine – 5mg <span class="dosage-tag night">Night</span></li>
+          </ul>
+        </div>
+      </div>
+      <!-- upload prescriptions and view them -->
+      <div class="section-card">
+        <h2>Upload Prescriptions</h2>
+        <div class="upload-prescription-wrapper">
+          <div class="upload-box" id="uploadBox">Drop file here or click to upload</div>
+          <div id="uploadList" class="history-box"></div>
+        </div>
+      </div>
+      <!-- doctor section -->
+      <div class="section-card">
+        <h2>Doctor Panel</h2>
+        <div class="doctor-panel">
+          <div class="section-card">
+            <h3>Doctor History</h3>
+            <div id="doctorList" class="doctor-list-box"></div>
+          </div>
+
+          <!-- <div class="doctor-card">
+            <h4>Assigned Doctor</h4>
+            <p><strong>Dr. Aritra Ghosh</strong></p>
+            <p>MBBS, MD – Internal Medicine</p>
+            <p>📍 Ghosh Medical Chambers, 123 B.T. Road, Kolkata – 700058</p>
+            <p>📞 +91-9876543210</p>
+            <div style="margin-top: 1rem;">
+              <button onclick="alert('Initiating secure message...')" class="sync-btn">💬 Message</button>
+              <button onclick="alert('Calling doctor...')" class="sync-btn" style="margin-left: 10px;">📞 Call</button>
+            </div> -->
+          <!-- <hr>
+              <p><strong>Dr. Aritra Ghosh</strong></p>
+              <p>MBBS, MD – Internal Medicine</p>
+              <p>📍 Ghosh Medical Chambers, 123 B.T. Road, Kolkata – 700058</p>
+              <p>📞 +91-9876543210</p>
+              <div style="margin-top: 1rem;">
+                <button onclick="alert('Initiating secure message...')" class="sync-btn">💬 Message</button>
+                <button onclick="alert('Calling doctor...')" class="sync-btn" style="margin-left: 10px;">📞 Call</button>
+              </div>
+              <p><strong>Dr. Aritra Ghosh</strong></p>
+              <p>MBBS, MD – Internal Medicine</p>
+              <p>📍 Ghosh Medical Chambers, 123 B.T. Road, Kolkata – 700058</p>
+              <p>📞 +91-9876543210</p>
+              <div style="margin-top: 1rem;">
+                <button onclick="alert('Initiating secure message...')" class="sync-btn">💬 Message</button>
+                <button onclick="alert('Calling doctor...')" class="sync-btn" style="margin-left: 10px;">📞 Call</button>
+              </div> -->
+        </div>
+      <div class="docutil">
+        <div class="doctor-card">
+          <h4>Upcoming Appointments</h4>
+          <div class="appointment-entry">
+            <div class="appt-date">
+              <span class="day">14</span>
+              <span class="month">JUL</span>
+            </div>
+            <div class="appt-details">
+              <p><strong>Dr. Aritra Ghosh</strong></p>
+              <p>🕓 10:30 AM | 📍 Ghosh Medical Chambers</p>
+              <div class="appt-actions">
+                <span class="status-badge upcoming">Upcoming</span>
+                <div class="more-actions-wrapper">
+                  <button class="more-actions-btn" onclick="toggleMoreActions(this)">⋮ More Actions</button>
+                  <div class="more-actions-menu">
+                    <button onclick="alert('Requesting to cancel...')">🗑️ Cancel</button>
+                    <button onclick="alert('Requesting to postpone...')">↗️ Postpone</button>
+                    <button onclick="alert('Requesting to prepone...')">↘️ Prepone</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="appointment-entry">
+            <div class="appt-date">
+              <span class="day">02</span>
+              <span class="month">AUG</span>
+            </div>
+            <div class="appt-details">
+              <p><strong>Dr. Aritra Ghosh</strong></p>
+              <p>🕓 2:00 PM | 📍 Ghosh Medical Chambers</p>
+              <div class="appt-actions">
+                <span class="status-badge upcoming">Upcoming</span>
+                <div class="more-actions-wrapper">
+                  <button class="more-actions-btn" onclick="toggleMoreActions(this)">⋮ More Actions</button>
+                  <div class="more-actions-menu">
+                    <button onclick="alert('Requesting to cancel...')">🗑️ Cancel</button>
+                    <button onclick="alert('Requesting to postpone...')">↗️ Postpone</button>
+                    <button onclick="alert('Requesting to prepone...')">↘️ Prepone</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button class="sync-btn" onclick="syncCalendar()">📅 Sync with Calendar</button>
+        </div>
+        <div class="doctor-card">
+          <h4>Request an Appointment</h4>
+          <form class="appointment-form" onsubmit="event.preventDefault(); submitAppointment();">
+            <input type="text" id="patientName" placeholder="Your Name" required>
+            <input type="email" id="patientEmail" placeholder="Your Email" required>
+            <input type="datetime-local" id="appointmentDate" required>
+            <textarea id="reason" placeholder="Reason for appointment" rows="3" required></textarea>
+            <button type="submit">Request Appointment</button>
+          </form>
+          <div id="appointmentStatus" style="margin-top: 1rem; color: lightgreen;"></div>
+        </div>
+      </div>
+    </div>
+    </div>
+    
+    <!-- <div class="section-card" id="doctors">
+        <h2>Doctor & Medicine Info</h2>
+        <div class="info-row">
+          <div class="card">
+            <h3>Assigned Doctor</h3>
+            <p><strong>Dr. Aritra Ghosh</strong></p>
+            <p style="margin-top: 0.5rem; color: #ccc;">MBBS, MD – Internal Medicine</p>
+            <p style="margin-top: 0.5rem; color: #ccc;">License No: 86172</p>
+            <p style="margin-top: 1rem;"><strong>Upcoming Appointments:</strong></p>
+            <ul>
+              <li>📅 July 14, 2025 – 10:30 AM</li>
+              <li>📅 Aug 2, 2025 – 2:00 PM</li>
+            </ul>
+          </div>
+          <div class="card" id="medicines">
+            <h3>Prescribed Medicines</h3>
+            <ul>
+              <li><strong>Metformin</strong> – 500mg, 2x/day</li>
+              <li><strong>Paracetamol</strong> – 650mg, as needed</li>
+              <li><strong>Amlodipine</strong> – 5mg, morning</li>
+            </ul>
+          </div>
+        </div>
+      </div> -->
+    <!-- <div class="section-card"> -->
+    <!-- <h3>Appointments & Contact</h3>
+        <div class="appointment-section">
+          <div class="appointment-form">
+            <h4>Request an Appointment</h4>
+            <form onsubmit="event.preventDefault(); submitAppointment();">
+              <input type="text" id="patientName" placeholder="Your Name" required>
+              <input type="email" id="patientEmail" placeholder="Your Email" required>
+              <input type="datetime-local" id="appointmentDate" required>
+              <textarea id="reason" placeholder="Reason for appointment" rows="3" required></textarea>
+              <button type="submit">Request Appointment</button>
+            </form>
+            <div id="appointmentStatus" style="margin-top: 1rem; color: lightgreen;"></div>
+          </div>
+          <div class="doctor-contact">
+            <h4>Contact Doctor</h4>
+            <p><strong>Dr. Aritra Ghosh</strong></p>
+            <p>MBBS, MD – Internal Medicine</p>
+            <p>📍 Ghosh Medical Chambers,<br>123 B.T. Road, Kolkata – 700058</p>
+            <p>📞 +91-9876543210</p>
+            <div class="chat-options">
+              <button onclick="alert('Initiating secure message...')">💬 Text Message</button>
+              <button onclick="alert('Calling doctor...')">📞 Call</button>
+            </div>
+          </div>
+        </div>
+      </div> -->
+
+
+
+    <div class="section-card">
+      <h2>Doctor's Remark</h2>
+      <textarea readonly>Continue same dosage. Monitor BP weekly.</textarea>
+    </div>
+  </div>
+  <button class="chatbot-toggle" onclick="toggleChatbot()">💬</button>
+  <div id="chatbotBox" class="chatbot-placeholder">
+    <h4 style="margin-top: 0;">MediVault Assistant (coming soon)</h4>
+    <p>This is a placeholder for the AI chatbot.</p>
+  </div>
+  </div>
+  <script>
+    let lastScrollY = window.scrollY;
+    const greeting = document.querySelector('.greetings');
+    let greetingHidden = false;
+
+    window.addEventListener('scroll', () => {
+      const currentScrollY = window.scrollY;
+      if (!greetingHidden && currentScrollY > lastScrollY) {
+        greeting.classList.add('hide');
+        greetingHidden = true;
+      }
+      lastScrollY = currentScrollY;
+    });
+
+    new Chart(document.getElementById('bpChart'), {
+      type: 'line',
+      data: {
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+        datasets: [{ label: 'BP (mmHg)', data: [120, 125, 130, 122, 118], borderColor: '#ff6384', tension: 0.4 }]
+      },
+      options: { responsive: true, plugins: { legend: { display: false } } }
+    });
+
+    new Chart(document.getElementById('sugarChart'), {
+      type: 'line',
+      data: {
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+        datasets: [{ label: 'Sugar (mg/dL)', data: [95, 100, 110, 105, 98], borderColor: '#36a2eb', tension: 0.4 }]
+      },
+      options: { responsive: true, plugins: { legend: { display: false } } }
+    });
+
+    const bmiValue = 24.5;
+    const bmiChart = new Chart(document.getElementById('bmiGauge'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Underweight', 'Normal', 'Overweight', 'Obese', 'Severe'],
+        datasets: [{
+          data: [18.5, 6.4, 5, 5, 5.1],
+          backgroundColor: ['#2196f3', '#4caf50', '#ffc107', '#ff5722', '#f44336'],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        rotation: -90,
+        circumference: 180,
+        cutout: '70%',
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: { enabled: false }
+        },
+        animation: false
+      },
+      plugins: [{
+        id: 'needle',
+        afterDraw(chart) {
+          const { ctx, chartArea } = chart;
+          const centerX = (chartArea.left + chartArea.right) / 2;
+          const centerY = chartArea.bottom;
+
+          const maxBMI = 40;
+          const angleDeg = (bmiValue / maxBMI) * 180 - 90;
+          const angleRad = angleDeg * Math.PI / 180;
+          const needleLength = chart.width / 3.2;
+
+          const x = centerX + needleLength * Math.cos(angleRad);
+          const y = centerY + needleLength * Math.sin(angleRad);
+
+          ctx.save();
+          ctx.beginPath();
+          ctx.moveTo(centerX, centerY);
+          ctx.lineTo(x, y);
+          ctx.lineWidth = 3;
+          ctx.strokeStyle = '#fff';
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.arc(centerX, centerY, 4, 0, 2 * Math.PI);
+          ctx.fillStyle = '#fff';
+          ctx.fill();
+          ctx.restore();
+        }
+      }]
+    });
+
+    //notification and alert
+    const appointments = [
+      { date: '2025-07-14T10:30:00', label: 'Appointment with Dr. Ghosh' },
+      { date: '2025-08-02T14:00:00', label: 'Appointment with Dr. Ghosh' }
+    ];
+
+    function notifyUser(message) {
+      if (Notification.permission === 'granted') {
+        new Notification('MediVault Reminder', { body: message });
+      }
+    }
+
+    function scheduleReminders() {
+      appointments.forEach(app => {
+        const now = new Date();
+        const appTime = new Date(app.date);
+        const diff = appTime - now;
+        if (diff > 0) {
+          setTimeout(() => {
+            alert(app.label);
+            notifyUser(app.label);
+          }, diff);
+        }
+      });
+    }
+
+    if ("Notification" in window) {
+      if (Notification.permission === "granted") {
+        scheduleReminders();
+      } else if (Notification.permission !== "denied") {
+        Notification.requestPermission().then(permission => {
+          if (permission === "granted") scheduleReminders();
+        });
+      }
+    }
+    const uploadBox = document.getElementById('uploadBox');
+    const uploadList = document.getElementById('uploadList');
+
+    function generateOTP() {
+      return Math.floor(100000 + Math.random() * 900000).toString();
+    }
+    //appoinment
+    function submitAppointment() {
+      const name = document.getElementById('patientName').value;
+      const email = document.getElementById('patientEmail').value;
+      const date = document.getElementById('appointmentDate').value;
+      const reason = document.getElementById('reason').value;
+
+      if (name && email && date && reason) {
+        document.getElementById('appointmentStatus').textContent =
+          `✅ Appointment request sent for ${new Date(date).toLocaleString()}`;
+        document.getElementById('patientName').value = '';
+        document.getElementById('patientEmail').value = '';
+        document.getElementById('appointmentDate').value = '';
+        document.getElementById('reason').value = '';
+      }
+    }
+    function syncCalendar() {
+      alert("📅 This would sync your appointments to your Google Calendar (future feature)");
+    }
+
+    //add doctor entry
+    function addDoctorCard(name, degree, clinic, phone, tag) {
+  const now = new Date().toLocaleString();
+  const list = document.getElementById('doctorList');
+  const div = document.createElement('div');
+  div.className = 'doctor-entry';
+  div.innerHTML = `
+    <strong>${name}</strong> <span class="status-badge">${tag}</span><br>
+    <small>${degree}</small><br>
+    <small>📍 ${clinic}</small><br>
+    <small>📞 ${phone}</small>
+    <div class="entry-footer">
+      <small>🕒 ${now}</small>
+      <div>
+        <button onclick="alert('Message sent to ${name}')">💬 Message</button>
+        <button onclick="alert('Calling ${name}')">📞 Call</button>
+      </div>
+    </div>
+  `;
+  list.appendChild(div);
+}
+
+// Example Usage:
+addDoctorCard("Dr. Sunita Mukherjee", "MBBS, DNB – Cardiology", "Fortis Heart Centre, EM Bypass", "+91-9876123456", "Previously Checked");
+addDoctorCard("Dr. Rakesh Banerjee", "MBBS, MD – Endocrinology", "Ruby Hospital Campus, Kolkata", "+91-9876987654", "Consulted");
+
+    function addFileItem(name) {
+      const otp = generateOTP();
+      const now = new Date().toLocaleString();
+      const div = document.createElement('div');
+      div.className = 'history-entry';
+      div.innerHTML = `
+    <div class="entry-header">
+      <strong>${name}</strong>
+      <div class="entry-options-wrapper">
+        <div class="entry-menu" onclick="toggleMenu(this)">⋮</div>
+        <div class="entry-dropdown">
+          <button onclick="showDetails('${name}', '${now}', 'Dr. Aritra Ghosh')">📄 Details</button>
+          <button onclick="deleteEntry(this)">🗑️ Delete</button>
+          <button onclick="shareToWhatsApp('${name}', '${otp}')">📤 Share to WhatsApp</button>
+        </div>
+      </div>
+    </div>
+    <div class="entry-footer">
+      <small>${now}</small><br/>
+      <button class="copy-btn" onclick="navigator.clipboard.writeText('${otp}').then(()=>alert('OTP ${otp} copied!'))">Share to doctor with OTP</button>
+    </div>
+  `;
+      uploadList.appendChild(div);
+    }
+
+    function showDetails(fileName, time, doctor) {
+      const backdrop = document.createElement('div');
+      backdrop.className = 'modal-backdrop';
+      backdrop.onclick = () => { backdrop.remove(); modal.remove(); };
+
+      const modal = document.createElement('div');
+      modal.className = 'modal-details';
+      modal.innerHTML = `
+    <h3>📄 ${fileName}</h3>
+    <p><strong>Uploaded:</strong> ${time}</p>
+    <p><strong>Prescribed by:</strong> ${doctor}</p>
+    <button onclick="document.querySelector('.modal-backdrop')?.remove(); this.parentElement.remove();" style="margin-top: 1rem; padding: 6px 12px; background:#4caf50; border:none; border-radius:5px; color:white; cursor:pointer;">Close</button>
+  `;
+
+      document.body.appendChild(backdrop);
+      document.body.appendChild(modal);
+    }
+
+    function deleteEntry(btn) {
+      const card = btn.closest('.history-entry');
+      const tempId = `delete-${Date.now()}`;
+      card.setAttribute('id', tempId);
+
+      const backdrop = document.createElement('div');
+      backdrop.className = 'modal-backdrop';
+      backdrop.onclick = () => { backdrop.remove(); modal.remove(); };
+
+      const modal = document.createElement('div');
+      modal.className = 'modal-details';
+      modal.innerHTML = `
+    <h3>⚠️ Confirm Deletion</h3>
+    <p>This file will be deleted. Are you sure?</p>
+    <div style="margin-top: 1rem;">
+      <button onclick="document.querySelector('.modal-backdrop')?.remove(); this.closest('.modal-details').remove();" style="margin-right: 10px; padding:6px 12px; border:none; border-radius:5px; background:#888; color:white;">No</button>
+      <button onclick="confirmDelete('${tempId}')" style="padding:6px 12px; background:#f44336; border:none; border-radius:5px; color:white;">Yes</button>
+    </div>
+  `;
+
+      document.body.appendChild(backdrop);
+      document.body.appendChild(modal);
+    }
+
+    function confirmDelete(cardId) {
+      document.getElementById(cardId)?.remove();
+      document.querySelector('.modal-details')?.remove();
+      document.querySelector('.modal-backdrop')?.remove();
+    }
+
+    //more actions and doctor timestamp 
+    function toggleMoreActions(btn) {
+      const wrapper = btn.closest('.more-actions-wrapper');
+      const menu = wrapper.querySelector('.more-actions-menu');
+      document.querySelectorAll('.more-actions-menu').forEach(m => {
+        if (m !== menu) m.style.display = 'none';
+      });
+      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+      setTimeout(() => {
+        document.addEventListener('click', function outsideClick(e) {
+          if (!wrapper.contains(e.target)) {
+            menu.style.display = 'none';
+            document.removeEventListener('click', outsideClick);
+          }
+        });
+      }, 10);
+    }
+
+    // Append timestamp and doctor name to remarks section
+    const doctorRemark = document.querySelector('textarea[readonly]');
+    if (doctorRemark) {
+      const timestamp = new Date().toLocaleString();
+      doctorRemark.value += "🕒 " + timestamp + " — Dr.Aritra Ghosh";
+    }
+
+    uploadBox.onclick = () => {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.onchange = e => {
+        const file = e.target.files[0];
+        if (file) addFileItem(file.name);
+      };
+      input.click();
+    };
+    function toggleMenu(menuIcon) {
+      // Close any open dropdowns first
+      document.querySelectorAll('.entry-dropdown').forEach(drop => drop.style.display = 'none');
+      const dropdown = menuIcon.nextElementSibling;
+      dropdown.style.display = 'block';
+
+      // Stop outside click from closing immediately
+      setTimeout(() => {
+        document.addEventListener('click', outsideClose);
+      }, 10);
+    }
+    function shareToWhatsApp(fileName, otp) {
+      alert(`Pretend we're sharing "${fileName}" with OTP: ${otp} to WhatsApp 🚀`);
+      // In future: open actual wa.me link
+    }
+    // Close dropdown if click is outside
+    function outsideClose(e) {
+      if (!e.target.closest('.entry-options-wrapper')) {
+        document.querySelectorAll('.entry-dropdown').forEach(drop => drop.style.display = 'none');
+        document.removeEventListener('click', outsideClose);
+      }
+    }
+    uploadBox.ondragover = e => { e.preventDefault(); uploadBox.style.borderColor = '#fff'; };
+    uploadBox.ondrop = e => {
+      e.preventDefault();
+      const file = e.dataTransfer.files[0];
+      if (file) addFileItem(file.name);
+    };
+    const toggleBtn = document.getElementById('darkToggle');
+    toggleBtn.addEventListener('click', () => {
+      document.body.classList.toggle('light-mode');
+      toggleBtn.textContent = document.body.classList.contains('light-mode') ? '☀️' : '🌙';
+    });
+
+    // Optional Light Mode Styles
+    const lightStyles = document.createElement('style');
+    lightStyles.innerHTML = `
+    body.light-mode {
+      background: #f0f0f0;
+      color: #111;
+    }
+    body.light-mode .section-card,
+    body.light-mode .upload-box,
+    body.light-mode .history-entry {
+      background: rgba(0,0,0,0.05) !important;
+      color: #111;
+    }
+    body.light-mode .top-nav {
+      background: #fff;
+      color: #111;
+    }
+    body.light-mode .top-nav a,
+    body.light-mode .top-nav button {
+      color: #111;
+    }
+    body.light-mode .settings-menu {
+      background: #eee;
+      color: #111;
+    }
+    body.light-mode .settings-menu a:hover {
+      background: rgba(0, 0, 0, 0.1);
+    }
+  `;
+    document.head.appendChild(lightStyles);
+
+    // Smooth Scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', e => {
+        e.preventDefault();
+        document.querySelector(anchor.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+    function toggleChatbot() {
+      const box = document.getElementById('chatbotBox');
+      box.style.display = box.style.display === 'block' ? 'none' : 'block';
+    }
+  </script>
+</body>
+
+</html>
