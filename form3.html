@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patient Onboarding</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(90deg, #04c2ff, #02d3bb, #083c58, #012c3b);
+      background-size: 400% 400%;
+      animation: gradientAnimation 15s ease infinite;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    @keyframes gradientAnimation {
+      0% {
+        background-position: 0% 25%;
+      }
+
+      25% {
+        background-position: 25% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      75% {
+        background-position: 50% 25%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+
+    form {
+      max-width: 600px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      position: relative;
+      z-index: 1;
+    }
+
+    fieldset {
+      border: none;
+      padding: 0;
+      margin-bottom: 20px;
+      display: none;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    fieldset.active {
+      display: block;
+    }
+
+    legend {
+      font-weight: 500;
+      color: #fff;
+      font-size: 1.2em;
+      margin-bottom: 15px;
+    }
+
+    .form-group {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      margin-right: 10px;
+      min-width: 150px;
+      color: #fff;
+      font-weight: 400;
+    }
+
+    .radio-group,
+    .gender-group {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .radio-group input {
+      margin-right: 5px;
+    }
+
+    .height-inputs {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    #height-ft-inch,
+    #height-cms {
+      display: block;
+    }
+
+    #height-cms input {
+      width: 80px;
+      padding: 8px;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.3);
+      border: none;
+      color: #333;
+    }
+
+    input,
+    select,
+    textarea {
+      padding: 8px;
+      border: none;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.3);
+      color: #333;
+      transition: background 0.3s ease;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      background: rgba(255, 255, 255, 0.5);
+      outline: none;
+    }
+
+    .navigation {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .navigation button {
+      padding: 10px 20px;
+      margin: 0 10px;
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .navigation button:hover {
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    .navigation button:disabled {
+      background: rgba(255, 255, 255, 0.1);
+      cursor: not-allowed;
+    }
+
+    .progress-bar {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      max-width: 600px;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 5px;
+      display: flex;
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    .progress-segment {
+      flex: 1;
+      height: 100%;
+      background: #ccc;
+      transition: background 0.3s ease;
+    }
+
+    .progress-bar.active {
+      background: linear-gradient(to right, #fff, #4ecdc4);
+    }
+
+    .progress-segment.completed {
+      background: #4ecdc4;
+    }
+
+    #successMessage {
+      display: none;
+      text-align: center;
+      color: #fff;
+      font-size: 1.2em;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="progress-bar" id="progressBar">
+    <div class="progress-segment"></div>
+    <div class="progress-segment"></div>
+    <div class="progress-segment"></div>
+    <div class="progress-segment"></div>
+    <div class="progress-segment"></div>
+  </div>
+
+  <form id="onboardingForm">
+    <fieldset>
+      <legend>Basic Information</legend>
+      <div class="form-group"><label>Name</label><input type="text" required></div>
+      <div class="form-group"><label>Date of Birth</label><input type="date" required></div>
+      <div class="form-group"><label>Email</label><input type="email" required></div>
+      <div class="form-group"><label>Phone</label><input type="tel" required></div>
+      <div class="form-group"><label>Language</label><input type="text" required></div>
+      <div class="form-group"><label>Gender</label>
+        <div class="radio-group gender-group">
+          <label><input type="radio" name="gender" required>Male</label>
+          <label><input type="radio" name="gender" required>Female</label>
+          <label><input type="radio" name="gender" required>Other</label>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Health Metrics</legend>
+      <div class="form-group">
+        <label>Height</label>
+        <div class="height-inputs">
+          <select>
+            <option>cm</option>
+            <option>ft,in</option>
+          </select>
+          <input type="number" required />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Weight</label>
+        <div class="height-inputs">
+          <select>
+            <option>kg</option>
+            <option>lbs</option>
+          </select>
+          <input type="number" required />
+        </div>
+      </div>
+      <div class="form-group"><label>Blood Pressure</label><input type="text" /></div>
+      <div class="form-group"><label>Heart Rate</label><input type="number" /></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Medical History</legend>
+      <div class="form-group"><label>Conditions</label><input type="text" /></div>
+      <div class="form-group"><label>Allergies</label><input type="text" /></div>
+      <div class="form-group"><label>Medications</label><input type="text" /></div>
+      <div class="form-group"><label>Past Surgeries</label><textarea rows="2"></textarea></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Lifestyle</legend>
+      <div class="form-group"><label>Do you smoke?</label>
+        <div class="radio-group"><label><input type="radio" name="smoke" required>Yes</label><label><input type="radio"
+              name="smoke" required>No</label></div>
+      </div>
+      <div class="form-group"><label>Alcohol use?</label>
+        <div class="radio-group"><label><input type="radio" name="alcohol" required>Yes</label><label><input
+              type="radio" name="alcohol" required>No</label></div>
+      </div>
+      <div class="form-group"><label>Exercise</label>
+        <div class="radio-group">
+          <label><input type="radio" name="exercise" required>Mild</label>
+          <label><input type="radio" name="exercise" required>Moderate</label>
+          <label><input type="radio" name="exercise" required>High</label></div>
+      </div>
+      <div class="form-group"><label>Diet</label><input type="text" /></div>
+      <div class="form-group"><label>Sleep (hrs)</label><input type="number" /></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Health Goals</legend>
+      <div class="form-group"><label>Health Goal</label><input type="text"></div>
+      <div class="form-group"><label>Specific Concerns</label><textarea rows="2"></textarea></div>
+    </fieldset>
+
+    <div class="navigation">
+      <button type="button" id="prevBtn" disabled>Previous</button>
+      <button type="button" id="nextBtn">Next</button>
+      <button type="submit" id="submitBtn" style="display: none;">Submit</button>
+    </div>
+  </form>
+
+  <p id="successMessage">✅ Form submitted successfully!</p>
+
+  <script>
+    const form = document.getElementById('onboardingForm');
+    const sections = form.querySelectorAll('fieldset');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const successMessage = document.getElementById('successMessage');
+    const progressSegments = document.querySelectorAll('.progress-segment');
+    let currentSection = 0;
+
+    function showSection(index) {
+      sections.forEach((section, i) => section.classList.toggle('active', i === index));
+      prevBtn.disabled = index === 0;
+      nextBtn.style.display = index === sections.length - 1 ? 'none' : 'inline-block';
+      submitBtn.style.display = index === sections.length - 1 ? 'inline-block' : 'none';
+      updateProgressBar(index);
+    }
+
+    function updateProgressBar(index) {
+      progressSegments.forEach((segment, i) => {
+        segment.classList.remove('active', 'completed');
+        if (i < index) segment.classList.add('completed');
+        else if (i === index) segment.classList.add('active');
+      });
+    }
+
+    function validateSection(index) {
+      const inputs = sections[index].querySelectorAll('input, select, textarea');
+      let valid = true;
+      inputs.forEach(input => {
+        if (input.hasAttribute('required') && input.offsetParent !== null && !input.checkValidity()) {
+          input.style.border = '1px solid #ff6b6b';
+          valid = false;
+        } else {
+          input.style.border = 'none';
+        }
+      });
+      return valid;
+    }
+
+    nextBtn.onclick = () => {
+      if (validateSection(currentSection)) {
+        currentSection++;
+        showSection(currentSection);
+      } else {
+        alert('Please fill in all required fields correctly.');
+      }
+    };
+
+    prevBtn.onclick = () => {
+      if (currentSection > 0) {
+        currentSection--;
+        showSection(currentSection);
+      }
+    };
+
+    form.onsubmit = e => {
+      e.preventDefault();
+      if (validateSection(currentSection)) {
+        successMessage.style.display = 'block';
+        form.reset();
+        currentSection = 0;
+        showSection(currentSection);
+        updateProgressBar(currentSection);
+      } else {
+        alert('Please fill in all required fields correctly.');
+      }
+    };
+
+    showSection(currentSection);
+    // Adding a summary step with horizontal card layout
+    const summaryData = document.createElement('div');
+    summaryData.id = 'summarySection';
+    summaryData.style.display = 'none';
+    summaryData.innerHTML = `
+  <style>
+    #summaryContent {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      padding: 1rem;
+    }
+    .summary-card {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      color: #fff;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .summary-card span:first-child {
+      font-weight: bold;
+    }
+  </style>
+  <h2 style="text-align:center; color:white;">Review Your Information</h2>
+  <div id="summaryContent"></div>
+  <div class="navigation" style="margin-top: 1rem;">
+    <button type="button" onclick="editForm()">Back to Edit</button>
+    <button type="button" onclick="confirmSubmit()">Confirm & Submit</button>
+  </div>
+`;
+    document.body.appendChild(summaryData);
+
+    function showSummary() {
+      let summary = '';
+      const formData = new FormData(form);
+      for (const [key, value] of formData.entries()) {
+        summary += `
+      <div class="summary-card">
+        <span>${key.replace(/_/g, ' ')}</span>
+        <span>${value}</span>
+      </div>`;
+      }
+      document.getElementById('summaryContent').innerHTML = summary;
+      form.style.display = 'none';
+      summaryData.style.display = 'block';
+      progressSegments.forEach(seg => seg.classList.remove('active', 'completed'));
+    }
+
+    function editForm() {
+      summaryData.style.display = 'none';
+      form.style.display = 'block';
+      showSection(currentSection);
+    }
+
+    function confirmSubmit() {
+      successMessage.style.display = 'block';
+      summaryData.style.display = 'none';
+      form.reset();
+      currentSection = 0;
+      showSection(currentSection);
+      updateProgressBar(currentSection);
+    }
+
+    submitBtn.onclick = (e) => {
+      e.preventDefault();
+      if (validateSection(currentSection)) {
+        showSummary();
+      } else {
+        alert('Please fill in all required fields correctly.');
+      }
+    };
+
+  </script>
+</body>
+
+</html>
